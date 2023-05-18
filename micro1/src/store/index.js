@@ -13,22 +13,22 @@ const tagObj = {
 }
 export default new Vuex.Store({
   state: {
-    tagList: getStore({name: 'main-tagList'}) || [],
-    tag: getStore({name: 'main-tag'}) || tagObj,
+    tagList: getStore({name: 'micro1-tagList'}) || [],
+    tag: getStore({name: 'micro1-tag'}) || tagObj,
   },
   mutations: {
     ADD_TAG: (state, action) => {
       state.tag = action;
-      setStore({name: 'main-tag', content: state.tag})
+      setStore({name: 'micro1-tag', content: state.tag})
       if (state.tagList.some(ele => diff(ele, action))) return
       state.tagList.push(action)
-      setStore({name: 'main-tagList', content: state.tagList})
+      setStore({name: 'micro1-tagList', content: state.tagList})
     },
     DEL_TAG: (state, action) => {
       state.tagList = state.tagList.filter(item => {
         return !diff(item, action);
       })
-      setStore({name: 'main-tagList', content: state.tagList})
+      setStore({name: 'micro1-tagList', content: state.tagList})
     },
   },
   actions: {
