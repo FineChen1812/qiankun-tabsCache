@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <h1>HOME</h1>
+    <h1>HOME1</h1>
     <el-input v-model="value" placeholder="我是首页的输入框"></el-input>
 
     <el-button @click="$router.push('/user')">点我跳转Main的User页面</el-button>

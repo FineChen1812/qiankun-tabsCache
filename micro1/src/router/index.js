@@ -32,7 +32,7 @@ const routes = [
     ]
   }, 
   {
-    path: '*', 
+    path: '/', 
     redirect: '/micro1/index',
   }
 ]

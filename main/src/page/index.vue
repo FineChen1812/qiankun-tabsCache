@@ -1,6 +1,8 @@
 <template>
   <el-container>
-  <el-header>Header</el-header>
+  <el-header>
+    <el-button type="danger" @click="clearCache">清除所有缓存</el-button>
+  </el-header>
   <el-container>
     <el-aside width="300px">
       <el-menu
@@ -24,13 +26,21 @@
     </el-aside>
     <el-main v-loading="loading" element-loading-text="页面加载中...">
       <tags></tags>
-      <div v-show="$route.name">
+      <div v-show="!isMicroApp">
+        <keep-alive :include="keepAliveList">
           <router-view v-slot="{ Component }">
-            <keep-alive :include="keepAliveList['iframe'] || []">
-              <component :is="Component" />
-            </keep-alive>
+            <component  :is="Component" />
           </router-view>
-        </div>
+        </keep-alive>
+      </div>
+       <div v-show="isMicroApp">
+        <div
+          :id="item.id"
+          v-for="item in microAppConfig"
+          :key="item.id"
+          v-show="isMicroApp"
+        ></div>
+      </div>
     </el-main>
   </el-container>
 </el-container>
@@ -38,7 +48,11 @@
 
 <script>
 import { menuDataList } from './menuData.js'
+import { isMicroApp } from "@/config/tools.js"
+import {microAppConfig} from "@/config/register.js"
 import tags from "./tags";
+import { clearStore } from "@/util/store"
+import {mapGetters} from "vuex";
 export default {
   components: {
     tags,
@@ -47,19 +61,32 @@ export default {
   data() {
     return {
       menuDataList,
-      loading: false
+      microAppConfig,
+      loading: false,
+      isMicroApp: false
     };
+  },
+  computed: {
+    ...mapGetters(["keepAliveList"]),
+    tagLen() {
+      return this.tagList.length || 0;
+    }
+  },
+  watch: {
+    '$route.path': function(val){
+      this.isMicroApp = isMicroApp(val)
+    }
   },
   mounted() {
   },
   methods: {
-    
-    //打开菜单
-    openMenu(item = {}) {
-      
-    },
-    getPath(data) {
-    },
+    // isMicroApp(){
+    //   console.log(isMicroApp(this.$route.path))
+    //   return isMicroApp(this.$route.path)
+    // },
+    clearCache(){
+      clearStore()
+    }
   },
 };
 </script>

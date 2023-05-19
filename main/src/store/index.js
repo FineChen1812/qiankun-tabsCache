@@ -15,6 +15,8 @@ export default new Vuex.Store({
   state: {
     tagList: getStore({name: 'main-tagList'}) || [],
     tag: getStore({name: 'main-tag'}) || tagObj,
+    loadedMicroApps: getStore({name: 'loadedMicroApps'}) || {},
+    keepAliveList: getStore({name: 'keepAliveList'}) || [],
   },
   mutations: {
     ADD_TAG: (state, action) => {
@@ -30,11 +32,31 @@ export default new Vuex.Store({
       })
       setStore({name: 'main-tagList', content: state.tagList})
     },
+    SET_LOADED_MICRO_APPS(state, val) {
+      state.loadedMicroApps = val
+      setStore({name: 'loadedMicroApps', content: state.loadedMicroApps})
+    },
+    SET_KEEP_ALIVE(state, val){
+      if(state.keepAliveList.includes(val)) return
+      state.keepAliveList.push(val)
+      setStore({name: 'keepAliveList', content: state.keepAliveList})
+    }, 
+    DEL_KEEPALIVE(state, val){
+      if(!state.keepAliveList.includes(val)) return
+      let index = state.keepAliveList.indexOf(val)
+      state.keepAliveList.splice(index, 1)
+      setStore({name: 'keepAliveList', content: state.keepAliveList})
+    }
   },
   actions: {
+    setLoadedMicroApps(context, value) {
+      context.commit('SET_LOADED_MICRO_APPS', value)
+    }
   },
   getters: {
     tagList: (state) => state.tagList,
-    tag: (state) => state.tag
+    tag: (state) => state.tag,
+    keepAliveList: (state) => state.keepAliveList,
+    loadedMicroApps: (state) => state.loadedMicroApps
   }
 })

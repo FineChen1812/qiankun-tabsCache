@@ -41,27 +41,29 @@ import {mapGetters} from "vuex";
         this.isFirstPage = this.tag.mate?.noClose
       },
       findTag(value) {
-        let tag, key;
+        let tag, key, componentName;
         this.tagList.map((item, index) => {
           if (item.value === value) {
             tag = item;
             key = index;
+            componentName = item.componentName;
           }
         });
-        return {tag: tag, key: key};
+        return {tag, key, componentName};
       },
       removeTab(value) {
-          let {tag, key} = this.findTag(value);
-          if(key == 0) return
-          this.$store.commit("DEL_TAG", tag)
-          if (tag.value === this.tag.value) {
-            tag = this.tagList[key === 0 ? key : key - 1] //如果关闭本标签让前推一个
-            this.openTag(tag)
-          }
+        let {tag, key, componentName} = this.findTag(value)
+        if(key == 0) return
+        this.$store.commit("DEL_TAG", tag)
+        this.$store.commit("DEL_KEEPALIVE", componentName)
+        if (tag.value === this.tag.value) {
+          tag = this.tagList[key === 0 ? key : key - 1] //如果关闭本标签让前推一个
+          this.openTag(tag)
+        }
       },
       openTag(item){
         this.$router.push({
-          path: item.value
+          path: item.name || item.value
         });
       }
     }
