@@ -16,25 +16,32 @@ const routes = [
         path: 'index',
         name: '首页',
         meta: {
-          isTab: true,
           noClose: true
         },
         component: () => import("@/views/home.vue")
       },
       {
         path: 'form',
-        name: '表单',
+        name: '子-表单',
         meta:{
-          isTab: true
         },
         component: () => import("@/views/form.vue")
-      }
+      },
+      {
+        path: 'list',
+        name: 'List',
+        meta:{
+          keepalive: false,
+          title: '子-列表'
+        },
+        component: () => import("@/views/list.vue")
+      },
     ]
   }, 
-  {
-    path: '/', 
-    redirect: '/micro1/index',
-  }
+  // {
+  //   path: '/', 
+  //   redirect: '/micro1/index',
+  // }
 ]
 
 const router = new VueRouter({
@@ -45,15 +52,13 @@ router.beforeEach((to, from, next) => {
   const meta = to.meta
   const value = to.query.src || to.fullPath
   const label = to.query.name || to.name
-  if(meta.isTab) {
-    store.commit("ADD_TAG", {
-      label: label,
-      value: value,
-      params: to.params,
-      query: to.query,
-      meta: meta,
-    });
-  }
+  store.commit("ADD_TAG", {
+    label: label,
+    value: value,
+    params: to.params,
+    query: to.query,
+    meta: meta,
+  });
   next()
 })
 

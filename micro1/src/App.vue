@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="micro1">
     <router-view/>
   </div>
 </template>

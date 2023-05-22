@@ -26,9 +26,10 @@ if (!window.__POWERED_BY_QIANKUN__) {
 }
 export async function bootstrap() {}
 export async function mount(props) {
-  console.log('zi')
+  console.log('mount')
   render(props)
 }
 export async function unmount() {
+  console.log('unmount')
   instance.$destroy()
 }

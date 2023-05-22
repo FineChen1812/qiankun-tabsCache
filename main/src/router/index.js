@@ -8,6 +8,38 @@ Vue.use(VueRouter)
 
 const routes = [
   {
+    path: '/micro1',
+    name: 'micro1',
+    component: Layout,
+    redirect: '/micro1/index',
+    children: [
+      {
+        path: 'index',
+        name: '首页',
+        meta: {
+          noClose: true
+        },
+        // component: () => import("@/views/home.vue")
+      },
+      {
+        path: 'form',
+        name: '子-表单',
+        meta:{
+        },
+        // component: () => import("@/views/form.vue")
+      },
+      {
+        path: 'list',
+        name: 'List',
+        meta:{
+          keepalive: false,
+          title: '子-列表'
+        },
+        // component: () => import("@/views/list.vue")
+      },
+    ]
+  }, 
+  {
     path: '/main',
     name: 'Home',
     component: Layout,
@@ -17,7 +49,6 @@ const routes = [
         path: 'home',
         name: 'Home',
         meta: {
-          isTab: true,
           noClose: true,
           keepalive: false,
           title: '首页'
@@ -28,7 +59,6 @@ const routes = [
         path: 'form',
         name: 'Form',
         meta:{
-          isTab: true,
           keepalive: true,
           title: '主-表单'
         },
@@ -38,7 +68,6 @@ const routes = [
         path: 'list',
         name: 'List',
         meta:{
-          isTab: true,
           keepalive: false,
           title: '主-列表'
         },
@@ -47,8 +76,8 @@ const routes = [
     ]
   }, 
   // {
-  //   path: '*', 
-  //   redirect: '/main/home',
+  //   path: '/', 
+  //   redirect: '/main',
   // }
 ]
 
@@ -60,16 +89,14 @@ router.beforeEach((to, from, next) => {
   const meta = to.meta
   const value = to.query.src || to.fullPath
   const label = meta.title || to.name
-  if(meta.isTab) {
-    store.commit("ADD_TAG", {
-      label: label,
-      value: value,
-      params: to.params,
-      query: to.query,
-      componentName: to.name,
-      meta: meta,
-    });
-  }
+  store.commit("ADD_TAG", {
+    label: label,
+    value: value,
+    params: to.params,
+    query: to.query,
+    componentName: to.name,
+    meta: meta,
+  });
   if(meta.keepalive ) store.commit("SET_KEEP_ALIVE", to.name)
   createMicroApp(to.path).then(() => {
     next()

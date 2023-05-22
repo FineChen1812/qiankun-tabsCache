@@ -13,24 +13,24 @@ const tagObj = {
 }
 export default new Vuex.Store({
   state: {
-    tagList: getStore({name: 'main-tagList'}) || [],
-    tag: getStore({name: 'main-tag'}) || tagObj,
+    tagList: getStore({name: 'tagList'}) || [],
+    tag: getStore({name: 'tag'}) || tagObj,
     loadedMicroApps: getStore({name: 'loadedMicroApps'}) || {},
     keepAliveList: getStore({name: 'keepAliveList'}) || [],
   },
   mutations: {
     ADD_TAG: (state, action) => {
       state.tag = action;
-      setStore({name: 'main-tag', content: state.tag})
+      setStore({name: 'tag', content: state.tag})
       if (state.tagList.some(ele => diff(ele, action))) return
       state.tagList.push(action)
-      setStore({name: 'main-tagList', content: state.tagList})
+      setStore({name: 'tagList', content: state.tagList})
     },
     DEL_TAG: (state, action) => {
       state.tagList = state.tagList.filter(item => {
         return !diff(item, action);
       })
-      setStore({name: 'main-tagList', content: state.tagList})
+      setStore({name: 'tagList', content: state.tagList})
     },
     SET_LOADED_MICRO_APPS(state, val) {
       state.loadedMicroApps = val
