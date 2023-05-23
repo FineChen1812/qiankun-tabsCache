@@ -1,3 +1,5 @@
+import {microAppConfig} from "@/config/register"
+
 export const diff = (obj1, obj2) => {
   delete obj1.close;
   var o1 = obj1 instanceof Object;
@@ -21,4 +23,17 @@ export const diff = (obj1, obj2) => {
     }
   }
   return true;
+}
+
+// 查找当前页签是否是微应用下的页面
+export function isMicroApp(path) {
+  return !!microAppConfig.some(item => {
+    return path.startsWith(item.activeRule.substring(1))
+  })
+}
+// 查找当前页签是否是微应用下的页面，并返回对应微应用配置项
+export function findMicroAppByPath(path) {
+  return microAppConfig.find(item => {
+    return path.startsWith(item.activeRule.substring(1))
+  })
 }

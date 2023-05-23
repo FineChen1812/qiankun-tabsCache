@@ -13,39 +13,34 @@ const tagObj = {
 }
 export default new Vuex.Store({
   state: {
-    tagList: getStore({name: 'tagList'}) || [],
-    tag: getStore({name: 'tag'}) || tagObj,
-    loadedMicroApps: getStore({name: 'loadedMicroApps'}) || {},
-    keepAliveList: getStore({name: 'keepAliveList'}) || [],
+    tagList: getStore({name: 'main-tagList'}) || [],
+    tag: getStore({name: 'main-tag'}) || tagObj,
+    keepAliveList: getStore({name: 'main-keepAliveList'}) || [],
   },
   mutations: {
     ADD_TAG: (state, action) => {
       state.tag = action;
-      setStore({name: 'tag', content: state.tag})
+      setStore({name: 'main-tag', content: state.tag})
       if (state.tagList.some(ele => diff(ele, action))) return
       state.tagList.push(action)
-      setStore({name: 'tagList', content: state.tagList})
+      setStore({name: 'main-tagList', content: state.tagList})
     },
     DEL_TAG: (state, action) => {
       state.tagList = state.tagList.filter(item => {
         return !diff(item, action);
       })
-      setStore({name: 'tagList', content: state.tagList})
-    },
-    SET_LOADED_MICRO_APPS(state, val) {
-      state.loadedMicroApps = val
-      setStore({name: 'loadedMicroApps', content: state.loadedMicroApps})
+      setStore({name: 'main-tagList', content: state.tagList})
     },
     SET_KEEP_ALIVE(state, val){
       if(state.keepAliveList.includes(val)) return
       state.keepAliveList.push(val)
-      setStore({name: 'keepAliveList', content: state.keepAliveList})
+      setStore({name: 'main-keepAliveList', content: state.keepAliveList})
     }, 
     DEL_KEEPALIVE(state, val){
       if(!state.keepAliveList.includes(val)) return
       let index = state.keepAliveList.indexOf(val)
       state.keepAliveList.splice(index, 1)
-      setStore({name: 'keepAliveList', content: state.keepAliveList})
+      setStore({name: 'main-keepAliveList', content: state.keepAliveList})
     }
   },
   actions: {
@@ -57,6 +52,5 @@ export default new Vuex.Store({
     tagList: (state) => state.tagList,
     tag: (state) => state.tag,
     keepAliveList: (state) => state.keepAliveList,
-    loadedMicroApps: (state) => state.loadedMicroApps
   }
 })

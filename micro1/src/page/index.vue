@@ -1,9 +1,18 @@
 <template>
-  <el-container>
-  <el-header>Header</el-header>
-  <el-container>
-    <el-aside width="300px">
-      <el-menu
+  <el-container v-if="isQiankun">
+    <el-main v-loading="loading" element-loading-text="页面加载中...">
+     <keep-alive :include="keepAliveList">
+        <router-view v-slot="{ Component }">
+          <component  :is="Component" />
+        </router-view>
+      </keep-alive>
+    </el-main>
+  </el-container>
+  <el-container v-else>
+    <el-header>Header</el-header>
+    <el-container>
+      <el-aside width="300px">
+        <el-menu
           :uniqueOpened="true"
           active-text-color="#409EFF"
           background-color="#D3DCE6"
@@ -21,79 +30,79 @@
             </el-menu-item>
           </div>
         </el-menu>
-    </el-aside>
-    <el-main v-loading="loading" element-loading-text="页面加载中...">
-      <tags></tags>
-      <div v-show="$route.name">
+      </el-aside>
+      <el-main v-loading="loading" element-loading-text="页面加载中...">
+        <tags></tags>
+        <div v-show="$route.name">
           <router-view v-slot="{ Component }">
             <keep-alive :include="keepAliveList['iframe'] || []">
               <component :is="Component" />
             </keep-alive>
           </router-view>
         </div>
-    </el-main>
+      </el-main>
+    </el-container>
   </el-container>
-</el-container>
 </template>
 
 <script>
 import { menuDataList } from './menuData.js'
-import tags from "./tags";
+import tags from './tags'
+import {mapGetters} from "vuex";
 export default {
   components: {
     tags,
   },
-  name: "index",
+  name: 'index',
   data() {
     return {
       menuDataList,
-      loading: false
-    };
+      loading: false,
+    }
   },
-  mounted() {
+  computed: {
+    ...mapGetters(["keepAliveList"]),
+    isQiankun() {
+      return window.__POWERED_BY_QIANKUN__
+    },
   },
+  mounted() {},
   methods: {
-    
-    //打开菜单
-    openMenu(item = {}) {
-      
-    },
-    getPath(data) {
-    },
   },
-};
+}
 </script>
 <style>
-  .el-header, .el-footer {
-    background-color: #B3C0D1;
-    color: #333;
-    text-align: center;
-    line-height: 60px;
-  }
-  
-  .el-aside {
-    background-color: #D3DCE6;
-    color: #333;
-    text-align: center;
-  }
-  
-  .el-main {
-    color: #333;
-    text-align: center;
-    /* line-height: 160px; */
-    height: calc(100vh - 60px);
-  }
-  
-  body > .el-container {
-    margin-bottom: 40px;
-  }
-  
-  .el-container:nth-child(5) .el-aside,
-  .el-container:nth-child(6) .el-aside {
-    line-height: 260px;
-  }
-  
-  .el-container:nth-child(7) .el-aside {
-    line-height: 320px;
-  }
+.el-header,
+.el-footer {
+  background-color: #b3c0d1;
+  color: #333;
+  text-align: center;
+  line-height: 60px;
+}
+
+.el-aside {
+  background-color: #d3dce6;
+  color: #333;
+  text-align: center;
+}
+
+.el-main {
+  color: #333;
+  text-align: center;
+  /* line-height: 160px; */
+  height: calc(100vh - 60px);
+}
+
+body > .el-container {
+  margin-bottom: 40px;
+}
+
+.el-container:nth-child(5) .el-aside,
+.el-container:nth-child(6) .el-aside {
+  line-height: 260px;
+}
+
+.el-container:nth-child(7) .el-aside {
+  line-height: 320px;
+}
 </style>

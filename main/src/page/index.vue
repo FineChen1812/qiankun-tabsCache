@@ -1,7 +1,7 @@
 <template>
   <el-container>
   <el-header>
-    <el-button type="danger" @click="clearCache">清除所有缓存</el-button>
+    <el-button type="danger" @click="clearCache">重置页面</el-button>
   </el-header>
   <el-container>
     <el-aside width="300px">
@@ -48,7 +48,7 @@
 
 <script>
 import { menuDataList } from './menuData.js'
-import { isMicroApp } from "@/config/tools.js"
+import { isMicroApp } from "@/util/utils.js"
 import {microAppConfig} from "@/config/register.js"
 import tags from "./tags";
 import { clearStore } from "@/util/store"
@@ -80,12 +80,10 @@ export default {
   mounted() {
   },
   methods: {
-    // isMicroApp(){
-    //   console.log(isMicroApp(this.$route.path))
-    //   return isMicroApp(this.$route.path)
-    // },
     clearCache(){
       clearStore()
+      window.location.reload();
+      this.$router.replace({path:'/main/home'})
     }
   },
 };

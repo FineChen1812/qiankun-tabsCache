@@ -9,12 +9,13 @@ Vue.config.productionTip = false
 
 Vue.use(ElementUI);
 let instance = null
-function render(props) {
+function render(props = {}) {
+  const { container } = props
   instance = new Vue({
     router,
     store,
     render: (h) => h(App),
-  }).$mount('#micro1') 
+  }).$mount(container ? container.querySelector("#micro1") : "#micro1") 
 }
 if (window.__POWERED_BY_QIANKUN__) {
   // 动态添加publicPath

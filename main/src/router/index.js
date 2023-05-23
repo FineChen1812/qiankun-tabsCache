@@ -2,7 +2,6 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Layout from '../page/index.vue'
 import store from '../store'
-import { createMicroApp } from "@/config/tools.js"
 
 Vue.use(VueRouter)
 
@@ -14,17 +13,21 @@ const routes = [
     redirect: '/micro1/index',
     children: [
       {
-        path: 'index',
-        name: '首页',
+        path: 'home',
+        name: 'Home',
         meta: {
-          noClose: true
+          noClose: true,
+          keepalive: false,
+          title: '首页'
         },
         // component: () => import("@/views/home.vue")
       },
       {
         path: 'form',
-        name: '子-表单',
+        name: 'Form',
         meta:{
+          keepalive: true,
+          title: '子-表单'
         },
         // component: () => import("@/views/form.vue")
       },
@@ -75,10 +78,10 @@ const routes = [
       },
     ]
   }, 
-  // {
-  //   path: '/', 
-  //   redirect: '/main',
-  // }
+  {
+    path: '/', 
+    redirect: '/main',
+  }
 ]
 
 const router = new VueRouter({
@@ -98,9 +101,8 @@ router.beforeEach((to, from, next) => {
     meta: meta,
   });
   if(meta.keepalive ) store.commit("SET_KEEP_ALIVE", to.name)
-  createMicroApp(to.path).then(() => {
-    next()
-  })
+  next()
 })
+
 
 export default router

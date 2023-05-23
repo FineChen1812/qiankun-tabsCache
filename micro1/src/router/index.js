@@ -10,20 +10,24 @@ const routes = [
     path: '/micro1',
     name: 'Home',
     component: Layout,
-    redirect: '/micro1/index',
+    redirect: '/micro1/home',
     children: [
       {
-        path: 'index',
-        name: '首页',
+        path: 'home',
+        name: 'Home',
         meta: {
-          noClose: true
+          noClose: true,
+          keepalive: false,
+          title: '首页'
         },
         component: () => import("@/views/home.vue")
       },
       {
         path: 'form',
-        name: '子-表单',
+        name: 'Form',
         meta:{
+          keepalive: true,
+          title: '子-表单'
         },
         component: () => import("@/views/form.vue")
       },
@@ -59,6 +63,7 @@ router.beforeEach((to, from, next) => {
     query: to.query,
     meta: meta,
   });
+  if(meta.keepalive ) store.commit("SET_KEEP_ALIVE", to.name)
   next()
 })
 

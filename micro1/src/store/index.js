@@ -13,28 +13,42 @@ const tagObj = {
 }
 export default new Vuex.Store({
   state: {
-    tagList: getStore({name: 'tagList'}) || [],
-    tag: getStore({name: 'tag'}) || tagObj,
+    tagList: getStore({name: 'micro1-tagList'}) || [],
+    tag: getStore({name: 'micro1-tag'}) || tagObj,
+    keepAliveList: getStore({name: 'micro1-keepAliveList'}) || [],
   },
   mutations: {
     ADD_TAG: (state, action) => {
       state.tag = action;
-      setStore({name: 'tag', content: state.tag})
+      setStore({name: 'micro1-tag', content: state.tag})
       if (state.tagList.some(ele => diff(ele, action))) return
       state.tagList.push(action)
-      setStore({name: 'tagList', content: state.tagList})
+      setStore({name: 'micro1-tagList', content: state.tagList})
     },
     DEL_TAG: (state, action) => {
       state.tagList = state.tagList.filter(item => {
         return !diff(item, action);
       })
-      setStore({name: 'tagList', content: state.tagList})
+      setStore({name: 'micro1-tagList', content: state.tagList})
     },
+    SET_KEEP_ALIVE(state, val){
+      if(state.keepAliveList.includes(val)) return
+      state.keepAliveList.push(val)
+      setStore({name: 'micro1-keepAliveList', content: state.keepAliveList})
+    }, 
+    DEL_KEEPALIVE(state, val){
+      if(!state.keepAliveList.includes(val)) return
+      let index = state.keepAliveList.indexOf(val)
+      state.keepAliveList.splice(index, 1)
+      setStore({name: 'micro1-keepAliveList', content: state.keepAliveList})
+    }
   },
   actions: {
   },
   getters: {
     tagList: (state) => state.tagList,
-    tag: (state) => state.tag
+    tag: (state) => state.tag,
+    isQiankun: (state) => state.isQiankun,
+    keepAliveList: (state) => state.keepAliveList,
   }
 })

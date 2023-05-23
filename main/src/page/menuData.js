@@ -36,10 +36,3 @@ export const menuDataList = [
     path: '/app3/abc',
   },
 ]
-
-let map = {}
-menuDataList.forEach((item) => {
-  map[item['path']] = item['title']
-})
-
-export const menuTitleData = map
