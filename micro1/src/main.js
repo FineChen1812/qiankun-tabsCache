@@ -8,29 +8,29 @@ import 'element-ui/lib/theme-chalk/index.css';
 Vue.config.productionTip = false
 
 Vue.use(ElementUI);
-let instance = null
-function render(props = {}) {
-  const { container } = props
+let instance = null, microName = ''
+function render(props = {}, cacheNode) {
+  const { container, name } = props
+  microName = name
   instance = new Vue({
     router,
     store,
-    render: (h) => h(App),
+    render: cacheNode ? () => cacheNode._vnode : h => h(App),
   }).$mount(container ? container.querySelector("#micro1") : "#micro1") 
 }
 if (window.__POWERED_BY_QIANKUN__) {
-  // 动态添加publicPath
   __webpack_public_path__ = window.__INJECTED_PUBLIC_PATH_BY_QIANKUN__
-}
-if (!window.__POWERED_BY_QIANKUN__) {
-  // 默认独立运行
+} else {
   render()
 }
+
 export async function bootstrap() {}
 export async function mount(props) {
-  console.log('mount')
-  render(props)
+  let cacheNode = window.globalMethods.getCache(microName)
+  render(props, cacheNode)
 }
 export async function unmount() {
-  console.log('unmount')
-  instance.$destroy()
+  window.globalMethods.dealCache(instance, microName).then(() => {
+    instance = null
+  })
 }

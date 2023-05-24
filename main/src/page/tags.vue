@@ -13,7 +13,9 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import { mapGetters } from "vuex";
+import { isMicroApp } from "@/util/utils.js"
+import { microAppConfig } from "@/config/register.js"
   export default {
     data() {
       return {
@@ -57,9 +59,20 @@ import {mapGetters} from "vuex";
         this.$store.commit("DEL_TAG", tag)
         this.$store.commit("DEL_KEEPALIVE", componentName)
         if (tag.value === this.tag.value) {
-          tag = this.tagList[key === 0 ? key : key - 1] //如果关闭本标签让前推一个
-          this.openTag(tag)
+          let newTag = this.tagList[key === 0 ? key : key - 1] //如果关闭本标签让前推一个
+          this.openTag(newTag)
         }
+        this.removeMicro(tag)
+      },
+      removeMicro(tag) {
+        if(!isMicroApp(tag.value)) return
+        let microName = tag.value.split('/')[1]
+        for(let i = 0; i < this.tagList.length; i++) {
+          let tagValue = this.tagList[i].value
+          if(tagValue.startsWith('/' + microName))return
+        }
+        let keyObj = microAppConfig.filter(item => item.activeRule == '#/' + microName)
+        this.Cache.delCache(keyObj[0].name)
       },
       openTag(item){
         this.$router.push({

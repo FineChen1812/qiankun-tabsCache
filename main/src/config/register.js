@@ -5,5 +5,8 @@ export const microAppConfig = [
     entry:'//localhost:1801',
     container: '#micro1',
     activeRule: '#/micro1',
+    props: {
+      name: 'micro1'
+    }
   }
 ]
