@@ -5,7 +5,7 @@ import store from '../store'
 
 Vue.use(VueRouter)
 
-const routes = [
+export const routes = [
   {
     path: '/micro1',
     name: 'micro1',

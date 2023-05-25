@@ -42,29 +42,31 @@ const routes = [
       },
     ]
   }, 
-  // {
-  //   path: '/', 
-  //   redirect: '/micro1/index',
-  // }
+  {
+    path: '/', 
+    redirect: '/micro1/home',
+  }
 ]
 
-const router = new VueRouter({
-  routes
-})
+export function initRouter(){
+  const router = new VueRouter({
+    routes
+  })
+  
+  router.beforeEach((to, from, next) => {
+    const meta = to.meta
+    const value = to.query.src || to.fullPath
+    const label = to.query.name || to.name
+    store.commit("ADD_TAG", {
+      label: label,
+      value: value,
+      params: to.params,
+      query: to.query,
+      meta: meta,
+    });
+    if(meta.keepalive ) store.commit("SET_KEEP_ALIVE", to.name)
+    next()
+  })
 
-router.beforeEach((to, from, next) => {
-  const meta = to.meta
-  const value = to.query.src || to.fullPath
-  const label = to.query.name || to.name
-  store.commit("ADD_TAG", {
-    label: label,
-    value: value,
-    params: to.params,
-    query: to.query,
-    meta: meta,
-  });
-  if(meta.keepalive ) store.commit("SET_KEEP_ALIVE", to.name)
-  next()
-})
-
-export default router
+  return router
+}

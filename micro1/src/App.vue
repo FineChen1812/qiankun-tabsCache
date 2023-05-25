@@ -6,6 +6,7 @@
 <script>
 import {clearStore} from "@/util/store"
 export default {
+  name: 'APP',
   unmounted() {
     clearStore()
   }

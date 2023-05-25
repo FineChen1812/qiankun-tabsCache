@@ -1,4 +1,6 @@
 <template>
+<div>
+  <h2>子-列表(不保活)</h2>
   <el-table
     :data="tableData"
     style="width: 100%"
@@ -18,6 +20,7 @@
       label="地址">
     </el-table-column>
   </el-table>
+</div>
 </template>
 
 <style>

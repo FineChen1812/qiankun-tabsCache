@@ -82,8 +82,8 @@ export default {
   methods: {
     clearCache(){
       clearStore()
+      this.$router.push({path:'/main/home'})
       window.location.reload();
-      this.$router.replace({path:'/main/home'})
     }
   },
 };
