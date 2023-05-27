@@ -54,6 +54,7 @@ export function initRouter(){
   })
   
   router.beforeEach((to, from, next) => {
+    console.log(to, from, '22')
     const meta = to.meta
     const value = to.query.src || to.fullPath
     const label = to.query.name || to.name

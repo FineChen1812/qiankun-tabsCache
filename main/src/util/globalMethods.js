@@ -13,7 +13,6 @@ class Cache {
         apps: [...instance.$router.apps],
         currentRoute: instance.$route.path
       }
-      console.log(needCached, 'apps')
       if(!cachedInstance._vnode.data.keepAlive)cachedInstance._vnode.data.keepAlive = true
       this.loadedMicroApp.set(key, cachedInstance)
       instance.$destroy()

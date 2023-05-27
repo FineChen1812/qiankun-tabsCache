@@ -19,7 +19,7 @@ function render(props = {}, cacheNode) {
     store,
     render: cacheNode ? () => cacheNode._vnode : h => h(App),
   })
-  instance.$mount(container ? container.querySelector("#micro1") : "#micro1") 
+  instance.$mount(container ? container.querySelector("#app1") : "#app1") 
 }
 if (window.__POWERED_BY_QIANKUN__) {
   __webpack_public_path__ = window.__INJECTED_PUBLIC_PATH_BY_QIANKUN__
@@ -29,10 +29,12 @@ if (window.__POWERED_BY_QIANKUN__) {
 
 export async function bootstrap() {}
 export async function mount(props) {
+  console.log('mount')
   let cacheNode = window.globalMethods.getCache(microName)
   render(props, cacheNode)
 }
 export async function unmount() {
+  console.log('um')
   window.globalMethods.dealCache(instance, microName).then(() => {
     instance = null
   })

@@ -24,7 +24,7 @@
           </div>
         </el-menu>
     </el-aside>
-    <el-main v-loading="loading" element-loading-text="页面加载中...">
+    <el-main>
       <tags></tags>
       <div v-show="!isMicroApp">
         <keep-alive :include="keepAliveList">
@@ -62,7 +62,6 @@ export default {
     return {
       menuDataList,
       microAppConfig,
-      loading: false,
       isMicroApp: false
     };
   },
@@ -73,8 +72,11 @@ export default {
     }
   },
   watch: {
-    '$route.path': function(val){
-      this.isMicroApp = isMicroApp(val)
+    '$route.path': {
+      handler: function(val){
+        this.isMicroApp = isMicroApp(val)
+      }, 
+      immediate: true
     }
   },
   mounted() {

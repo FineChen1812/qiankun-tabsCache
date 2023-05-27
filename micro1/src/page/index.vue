@@ -1,6 +1,6 @@
 <template>
   <el-container v-if="isQiankun">
-    <el-main v-loading="loading" element-loading-text="页面加载中...">
+    <el-main >
      <keep-alive :include="keepAliveList">
         <router-view v-slot="{ Component }">
           <component  :is="Component" />
@@ -31,11 +31,11 @@
           </div>
         </el-menu>
       </el-aside>
-      <el-main v-loading="loading" element-loading-text="页面加载中...">
+      <el-main >
         <tags></tags>
-        <div v-show="$route.name">
+        <div>
           <router-view v-slot="{ Component }">
-            <keep-alive :include="keepAliveList['iframe'] || []">
+            <keep-alive :include="keepAliveList">
               <component :is="Component" />
             </keep-alive>
           </router-view>
@@ -57,7 +57,6 @@ export default {
   data() {
     return {
       menuDataList,
-      loading: false,
     }
   },
   computed: {

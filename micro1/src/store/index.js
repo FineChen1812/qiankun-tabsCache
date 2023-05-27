@@ -16,6 +16,7 @@ export default new Vuex.Store({
     tagList: getStore({name: 'micro1-tagList'}) || [],
     tag: getStore({name: 'micro1-tag'}) || tagObj,
     keepAliveList: getStore({name: 'micro1-keepAliveList'}) || [],
+    baseFlag: getStore({ name: "baseFlag" }) || true,
   },
   mutations: {
     ADD_TAG: (state, action) => {
@@ -41,7 +42,11 @@ export default new Vuex.Store({
       let index = state.keepAliveList.indexOf(val)
       state.keepAliveList.splice(index, 1)
       setStore({name: 'micro1-keepAliveList', content: state.keepAliveList})
-    }
+    },
+    SET_BASE_FLAG: (state, flag) => {
+      state.baseFlag = flag;
+      setStore({ name: "baseFlag", content: state.baseFlag });
+    },
   },
   actions: {
   },
